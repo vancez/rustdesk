@@ -415,9 +415,9 @@ class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
                     color: kColorCanvas,
                     child: isWebDesktop
                         ? getBodyForDesktopWithListener()
-                        : SafeArea(
-                            child:
-                                OrientationBuilder(builder: (ctx, orientation) {
+                        // : SafeArea(
+                        //     child:
+                                :OrientationBuilder(builder: (ctx, orientation) {
                               if (_currentOrientation != orientation) {
                                 Timer(const Duration(milliseconds: 200), () {
                                   gFFI.dialogManager
@@ -436,7 +436,7 @@ class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
                                       ),
                               );
                             }),
-                          ),
+                          // ),
                   );
                 })
               ],
