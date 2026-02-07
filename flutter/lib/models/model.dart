@@ -2177,15 +2177,25 @@ class CanvasModel with ChangeNotifier {
     double h = size.height - topToEdge - bottomToEdge;
     if (isMobile) {
       // Account for safe area insets
-      // Portrait: exclude both notch (top) and home indicator (bottom)
-      // Landscape: exclude only notch (top), include home indicator in height
+      // Portrait: exclude both notch (top) and home indicator (bottom) from height
+      // Landscape: notch and home indicator are on left/right sides, exclude only notch (left) from width
       final isPortrait = size.height > size.width;
-      h = h -
-          mediaData.padding.top -
-          (isPortrait ? mediaData.padding.bottom : 0) -
-          mediaData.viewInsets.bottom -
-          (parent.target?.cursorModel.keyHelpToolsRectToAdjustCanvas?.bottom ??
-              0);
+      if (isPortrait) {
+        h = h -
+            mediaData.padding.top -
+            mediaData.padding.bottom -
+            mediaData.viewInsets.bottom -
+            (parent.target?.cursorModel.keyHelpToolsRectToAdjustCanvas?.bottom ??
+                0);
+      } else {
+        // Landscape: notch is on left, home indicator on right
+        // Only exclude notch (left), include home indicator in width
+        w = w - mediaData.padding.left;
+        h = h -
+            mediaData.viewInsets.bottom -
+            (parent.target?.cursorModel.keyHelpToolsRectToAdjustCanvas?.bottom ??
+                0);
+      }
     }
     return Size(w < 0 ? 0 : w, h < 0 ? 0 : h);
   }
