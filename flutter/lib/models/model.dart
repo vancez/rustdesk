@@ -2176,9 +2176,13 @@ class CanvasModel with ChangeNotifier {
     double w = size.width - leftToEdge - rightToEdge;
     double h = size.height - topToEdge - bottomToEdge;
     if (isMobile) {
-      // Account for safe area (notch)
+      // Account for safe area insets
+      // Portrait: exclude both notch (top) and home indicator (bottom)
+      // Landscape: exclude only notch (top), include home indicator in height
+      final isPortrait = size.height > size.width;
       h = h -
           mediaData.padding.top -
+          (isPortrait ? mediaData.padding.bottom : 0) -
           mediaData.viewInsets.bottom -
           (parent.target?.cursorModel.keyHelpToolsRectToAdjustCanvas?.bottom ??
               0);
